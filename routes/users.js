@@ -3,6 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 const User = require('../models/User');
 
 // @route     GET api/users/
@@ -85,5 +86,19 @@ router.post(
     }
   }
 );
+
+// @route     DELETE api/users/
+// @desc      Delete user
+// @access    Private
+router.delete('/', [auth], async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    await user.delete();
+    res.status(200).json({ msg: 'User deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
