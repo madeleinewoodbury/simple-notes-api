@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 // Load env vars
 dotenv.config({ path: './config/config.env' });
@@ -9,6 +10,14 @@ dotenv.config({ path: './config/config.env' });
 connectDB();
 
 const app = express();
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000/');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  next();
+});
+
+app.use(cors());
 
 app.get('/', (req, res) => res.send('API Running...'));
 
