@@ -10,6 +10,8 @@ connectDB();
 
 const app = express();
 
+app.get('/', (req, res) => res.send('API Running...'));
+
 // Body parser
 app.use(express.json());
 
